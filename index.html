@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TV Show Logger</title>
+
+<link rel="stylesheet" href="styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Questrial&display=swap" rel="stylesheet">
+
+<body>
+
+<h1>Television Show Logger</h1>
+<h4>Keep track of your favorite TV shows!</h4>
+
+<!-- MAIN SEARCH -->
+<div class="search-section">
+
+  <div class="input-group">
+  <input id="titleInput" placeholder="Search show title..." autocomplete="off">
+  <div id="suggestions"></div>
+  </div>
+
+  <!-- SORTING CONTROLS -->
+   <div class="sort-controls">
+    <select id="sort" onchange="renderShows()">
+    <option value="">Sort</option>
+    <option value="title">Title</option>
+    <option value="genre">Genre</option>
+    <option value="status">Status</option>
+    </select>
+  </div>
+</div>
+
+<div id="showModal" class="modal hidden">
+
+  <div class="modal-content">
+
+    <button id="closeModal" class="close">✕</button>
+
+    <div class="modal-left">
+      <img id="modalImage">
+    </div>
+
+    <div class="modal-right">
+        <h2 id="modalTitle"></h2>
+        
+        <div class="status-row">
+          <span>Status</span>
+          <div class="status-icons">
+            <span class="status-icon" data-status="To Watch">🕒</span>
+            <span class="status-icon" data-status="Watching">▶️</span>
+            <span class="status-icon" data-status="Completed">✅</span>
+          </div>
+        </div>
+        
+        <label>Genre</label>
+        <input id="modalGenre">
+        
+        <label>Rating</label>
+
+        <div id="ratingControl" class="rating-control">
+
+        <button id="ratingDown" class="rating-arrow">
+          <svg fill="#ffffff" height="15px" width="15px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M168.837,256L388.418,36.418c8.331-8.331,8.331-21.839,0-30.17c-8.331-8.331-21.839-8.331-30.17,0L123.582,240.915 c-8.331,8.331-8.331,21.839,0,30.17l234.667,234.667c8.331,8.331,21.839,8.331,30.17,0c8.331-8.331,8.331-21.839,0-30.17 L168.837,256z"></path> </g> </g> </g>
+          </svg>
+        </button>
+
+        <div id="ratingStars" class="stars"></div>
+
+        <button id="ratingUp" class="rating-arrow">
+          <svg fill="#ffffff" height="15px" width="15px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512.005 512.005" xml:space="preserve" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M388.418,240.923L153.751,6.256c-8.341-8.341-21.824-8.341-30.165,0s-8.341,21.824,0,30.165L343.17,256.005 L123.586,475.589c-8.341,8.341-8.341,21.824,0,30.165c4.16,4.16,9.621,6.251,15.083,6.251c5.461,0,10.923-2.091,15.083-6.251 l234.667-234.667C396.759,262.747,396.759,249.264,388.418,240.923z"></path> </g> </g> </g>
+          </svg>
+        </button>
+
+        </div>
+
+        <div id="ratingMessage" class="rating-disabled hidden">
+          Show must be completed to rate
+        </div>
+
+        <button id="confirmAdd" onclick="addShow()">Add Show</button>
+    </div>
+
+  </div>
+
+</div>
+
+<div id="shows"></div>
+
+<canvas class="confetti" id="confetti"></canvas>
+
+<script src="script.js"></script>
+
+</body>
+</html>
