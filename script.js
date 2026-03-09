@@ -157,12 +157,12 @@ shows[i].rank = val
 save()
 }
 
-const statusIcons = document.querySelectorAll(".status-icon");
+const statusButtons = document.querySelectorAll(".status-btn");
 let selectedStatus = "To Watch"; // default
 
-statusIcons.forEach(icon => {
+statusButtons.forEach(icon => {
   icon.addEventListener("click", () => {
-    statusIcons.forEach(i => i.classList.remove("selected"));
+    statusButtons.forEach(i => i.classList.remove("selected"));
     icon.classList.add("selected");
     selectedStatus = icon.dataset.status;
     updateRatingArea();
@@ -185,11 +185,13 @@ return a[sort].localeCompare ? a[sort].localeCompare(b[sort]) : a[sort]-b[sort]
 
 list.innerHTML="";
 
-if(filtered.length === 0){
-        list.innerHTML = `<div class="no-shows">No shows added. Start adding shows now!</div>`;
-        return;
-    }
+const overlay = document.getElementById("emptyOverlay");
 
+if(filtered.length === 0){
+    overlay.classList.remove("hidden");
+} else {
+    overlay.classList.add("hidden");
+}
 
 filtered.forEach((show,i)=>{
 

@@ -48,10 +48,10 @@
         
         <div class="status-row">
           <span>Status</span>
-          <div class="status-icons">
-            <span class="status-icon" data-status="To Watch">🕒</span>
-            <span class="status-icon" data-status="Watching">▶️</span>
-            <span class="status-icon" data-status="Completed">✅</span>
+          <div class="status-buttons">
+            <button class="status-btn btn-towatch" data-status="To Watch">To Watch</button>
+            <button class="status-btn btn-watching" data-status="Watching">Watching</button>
+            <button class="status-btn btn-completed" data-status="Completed">Completed</button>
           </div>
         </div>
         
@@ -85,6 +85,13 @@
 
   </div>
 
+</div>
+
+<div id="emptyOverlay" class="empty-overlay hidden">
+  <div class="no-shows">
+    <span>No shows added.</span>
+    Start adding shows now!
+  </div>
 </div>
 
 <div id="shows"></div>
