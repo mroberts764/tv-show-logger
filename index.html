@@ -12,7 +12,7 @@
 <body>
 
 <h1>Television Show Logger</h1>
-<h4>Keep track of your favorite TV shows!</h4>
+<h4>Start searching to keep track of your favorite TV shows!</h4>
 
 <!-- MAIN SEARCH -->
 <div class="search-section">
@@ -25,10 +25,10 @@
   <!-- SORTING CONTROLS -->
    <div class="sort-controls">
     <select id="sort" onchange="renderShows()">
-    <option value="">Sort</option>
-    <option value="title">Title</option>
-    <option value="genre">Genre</option>
-    <option value="status">Status</option>
+      <option value="">Sort</option>
+      <option value="title">Title</option>
+      <option value="genre">Genre</option>
+      <option value="status">Status</option>
     </select>
   </div>
 </div>
@@ -93,6 +93,20 @@
     Start adding shows now!
   </div>
 </div>
+
+<div id="deleteConfirm" class="confirm-overlay hidden">
+  <div class="confirm-box">
+    <p>Delete show?</p>
+    
+    <div class="confirm-actions">
+      <button id="confirmDelete" class="confirm-yes">✔</button>
+      <button id="cancelDelete" class="confirm-no">✕</button>
+    </div>
+
+  </div>
+</div>
+
+<div id="toastContainer"></div>
 
 <div id="shows"></div>
 

@@ -35,7 +35,7 @@ showSuggestions(data)
 
 })
 
-function showSuggestions(shows){
+function showSuggestions(shows) {
 
 suggestionsBox.innerHTML=""
 
@@ -87,7 +87,28 @@ suggestionsBox.innerHTML=""
 
 })
 
-async function addShow(){
+function showToast(message) {
+
+  const container = document.getElementById("toastContainer");
+  if(!container) return;
+
+  const toast = document.createElement("div");
+  toast.className = "toast";
+  toast.innerHTML = message;
+
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.classList.add("toast-hide");
+  }, 2500);
+
+  setTimeout(() => {
+    toast.remove();
+  }, 3000);
+
+}
+
+async function addShow() {
 
 let title = document.getElementById("titleInput").value
 let genre = document.getElementById("genreInput").value
@@ -141,6 +162,36 @@ function updateStatusById(id, newStatus) {
 
 }
 
+function showDeleteConfirm(id, title){
+
+  const card = document.querySelector(`.show-card[data-id='${id}']`);
+
+  if(card.querySelector(".delete-overlay")) return;
+
+  const overlay = document.createElement("div");
+  overlay.className = "delete-overlay show";
+
+  overlay.innerHTML = `
+    <p>Delete show?</p>
+    <div class="delete-actions">
+      <button class="delete-confirm">✔</button>
+      <button class="delete-cancel">✕</button>
+    </div>
+  `;
+
+  card.appendChild(overlay);
+
+  overlay.querySelector(".delete-confirm").onclick = () => {
+    deleteShowById(id);
+  };
+
+  overlay.querySelector(".delete-cancel").onclick = () => {
+    overlay.classList.remove("show");
+    setTimeout(()=>overlay.remove(),200);
+  };
+
+}
+
 function deleteShowById(id) {
   shows = shows.filter(s => s.id !== id);
   save();
@@ -175,13 +226,69 @@ let list = document.getElementById("shows")
 let search = document.getElementById("titleInput").value.toLowerCase()
 let sort = document.getElementById("sort").value
 
-let filtered = shows.filter(s=>s.title.toLowerCase().includes(search))
+let filtered = shows.filter(s => 
+  s.title.toLowerCase().includes(search)
+);
 
 if(sort){
-filtered.sort((a,b)=>{
-return a[sort].localeCompare ? a[sort].localeCompare(b[sort]) : a[sort]-b[sort]
-})
+
+  if(sort === "status"){
+
+    const order = {
+      "To Watch": 0,
+      "Watching": 1,
+      "Completed": 2
+    };
+
+    filtered.sort((a,b)=> order[a.status] - order[b.status]);
+
+  } else {
+
+    filtered.sort((a,b)=>{
+      return a[sort].localeCompare
+        ? a[sort].localeCompare(b[sort])
+        : a[sort] - b[sort];
+    });
+
+  }
+
 }
+
+const dropdowns = document.querySelectorAll(".dropdown");
+
+dropdowns.forEach(dropdown => {
+
+    const select = dropdown.querySelector('.select');
+    const caret = dropdown.querySelector('.caret');
+    const menu = dropdown.querySelector('.menu');
+    const options = dropdown.querySelectorAll('.menu li');
+    const selected = dropdown.querySelector('.selected');
+
+    select.addEventListener('click', () => {
+        select.classList.toggle('select-clicked');
+        caret.classList.toggle('caret-rotate');
+        menu.classList.toggle('menu-open');
+    });
+
+    options.forEach(option => {
+        option.addEventListener('click', () => {
+
+            selected.innerText = option.innerText;
+
+            select.classList.remove('select-clicked');
+            caret.classList.remove('caret-rotate');
+            menu.classList.remove('menu-open');
+
+            options.forEach(option => {
+                option.classList.remove('active');
+            });
+
+            option.classList.add('active');
+
+        });
+    });
+
+});
 
 list.innerHTML="";
 
@@ -242,7 +349,7 @@ onchange="updateStatusById(${show.id}, this.value)">
 
 </div>
 
-<button class="delete" onclick="deleteShowById(${show.id})">✕</button>
+<button class="delete" onclick="showDeleteConfirm(${show.id})">✕</button>
 
 `
 
@@ -345,6 +452,9 @@ shows.push({
 
 save()
 renderShows()
+
+showToast(`✓ <strong>${selectedShow.name}</strong> has been added.`);
+
 buildStarSelector()
 currentRating = 0
 updateStarDisplay()
@@ -401,7 +511,7 @@ ratingContainer.appendChild(star)
 }
 }
 
-function renderStars(rating){
+function renderStars(rating) {
 
 let starsHTML = ""
 
@@ -424,61 +534,6 @@ starsHTML += `<span class="star">★</span>`
 }
 
 return starsHTML
-
-}
-
-function celebrate(){
-
-let canvas = document.getElementById("confetti")
-let ctx = canvas.getContext("2d")
-
-canvas.width=window.innerWidth
-canvas.height=window.innerHeight
-
-let pieces=[]
-
-for(let i=0;i<120;i++){
-pieces.push({
-x:Math.random()*canvas.width,
-y:Math.random()*canvas.height,
-r:Math.random()*6+4,
-d:Math.random()*50
-})
-}
-
-let angle=0
-
-function draw(){
-
-ctx.clearRect(0,0,canvas.width,canvas.height)
-
-angle+=0.01
-
-for(let i=0;i<pieces.length;i++){
-
-let p=pieces[i]
-
-ctx.beginPath()
-ctx.arc(p.x,p.y,p.r,0,Math.PI*2,false)
-ctx.fillStyle=`hsl(${Math.random()*360},100%,50%)`
-ctx.fill()
-
-p.y+=Math.cos(angle+p.d)+3
-p.x+=Math.sin(angle)
-
-if(p.y>canvas.height){
-p.y=0
-}
-
-}
-
-requestAnimationFrame(draw)
-
-}
-
-draw()
-
-setTimeout(()=>ctx.clearRect(0,0,canvas.width,canvas.height),3000)
 
 }
 
